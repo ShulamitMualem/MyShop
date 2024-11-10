@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="LogIn.js" defer></script>
+    <link href="Style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="logInDiv">
+        <input placeholder="שם משתמש" type="email" id="userNameLogin" />
+        <br />
+        <input placeholder="סיסמה" type="password" id="passwordLogin" />
+        <br />
+        <button id="logIn" onclick="Login()">כניסה</button>
+        <br />
+        <br />
+    </div>
+    <button onclick="showRegister()">אינך רשום? לחץ כאן</button>
+    <div class="signUpDiv">
+        <input id="userName" type="email" placeholder="שם משתמש" />
+        <br />
+        <input id="password" type="password" placeholder="סיסמה" onblur="checkPassword()"/>
+        <br />
+        <input id="firstName" type="text" placeholder="שם פרטי" />
+        <br />
+        <input id="lastName" type="text" placeholder="שם משפחה" />
+        <br />
+        <button id="SignUp" onclick="addNewUser()">הרשמה</button>
+        <progress value="0" max="4" id="checkPassword"></progress>
+  
+        </div >
+</body>
+</html>

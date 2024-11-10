@@ -1,0 +1,85 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #ffafbd, #ffc3a0);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    direction:rtl;
+}
+
+div {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff4757;
+}
+
+button:active {
+    background-color: #ff6b6b;
+}
+
+button.signUpToggle {
+    background-color: transparent;
+    color: #333;
+    border: none;
+    text-decoration: underline;
+    font-size: 14px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+}
+
+.logInDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signUpDiv {
+    visibility: hidden;
+}
+
+#userNameUpdate, #firstNameUpdate, #lastNameUpdate, #passwordUpdate {
+    margin-top: 15px;
+}
+
+#SignUp {
+    margin-top: 20px;
+}
+#updateH1 {
+    color: #ff4757;
+}
