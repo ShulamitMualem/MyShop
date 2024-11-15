@@ -56,7 +56,7 @@ const addNewUser = async () => {
             body: JSON.stringify(newUser)
         })
             if (responsePost.status == 400)
-            throw new Error("כל השדות חובה, בדוק את תקינותם")
+            throw new Error("!כל השדות חובה, בדוק את תקינותם")
 
             if (!responsePost.ok)
             throw new Error("משהו השתבש נסה שוב")
