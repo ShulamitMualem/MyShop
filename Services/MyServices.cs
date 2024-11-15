@@ -16,11 +16,13 @@ namespace Services
         }
         public User CreateUser(User user)
         {
-            return repository.CreateUser(user);
+            return CheckPassword(user?.Password) < 3 ? null : repository.CreateUser(user);
         }
         public void UpDateUser(int id, User userToUpdate)
         {
-            repository.UpDateUser(id, userToUpdate);
+            if (CheckPassword(userToUpdate?.Password) < 3)
+                throw new Exception("סיסמה חלשה מדי");
+           repository.UpDateUser(id, userToUpdate);
         }
         public User Login(string userName, string password)
         {

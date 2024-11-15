@@ -41,7 +41,9 @@ namespace MyShop.Controllers
         public ActionResult Post([FromBody] User user)
         {
             User newUser = services.CreateUser(user);
-            return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
+            if(newUser!=null)
+                return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
+            return BadRequest("סיסמתך חלשה מדי");
         }
 
         [HttpPost("login")]
