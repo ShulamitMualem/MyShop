@@ -31,6 +31,7 @@ input {
 }
 
 button {
+    width: 260px;
     background-color: #ff6b6b;
     color: white;
     padding: 10px 20px;
@@ -82,4 +83,11 @@ button.signUpToggle {
 }
 #updateH1 {
     color: #ff4757;
+}
+progress {
+    width: 260px;
+    height: 20px;
+    /*background-color: #ff4757;*/
+    color: #ff4757;
+    
 }
