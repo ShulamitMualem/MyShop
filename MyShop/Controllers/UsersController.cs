@@ -56,7 +56,7 @@ namespace MyShop.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] User userToUpdate)
         {
-            services.UpDateUser(id,userToUpdate);
+            services.UpDateUser(id,userToUpdate);//return the result, check if succeeded.
         }
         [HttpPost("password")]
         public IActionResult CheckPassword([FromQuery] string password)
