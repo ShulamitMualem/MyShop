@@ -13,8 +13,8 @@ namespace MyShop.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        IServices services ;
-        public UsersController(IServices myServices)
+        IMyServices services ;
+        public UsersController(IMyServices myServices)
         {
             services = myServices;
         }
@@ -27,10 +27,10 @@ namespace MyShop.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public ActionResult<User> Get(int id)
+        public async Task<ActionResult<User>> Get(int id)
         {
-            
-            User user = services.GetUserById(id);
+           
+            User user =await services.GetUserById(id);
             return user!=null ? Ok(user) : NoContent();
                    
 
@@ -47,9 +47,9 @@ namespace MyShop.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult<User> LogIn([FromQuery] string userName, string password)
+        public async Task<ActionResult<User>> LogIn([FromQuery] string userName, string password)
         {
-            User user = services.Login(userName, password);
+            User user = await services.Login(userName, password);
             return user != null ? Ok(user) : NoContent();
         }
         // PUT api/<UsersController>/5

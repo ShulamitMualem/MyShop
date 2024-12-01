@@ -2,12 +2,12 @@
 
 namespace Services
 {
-    public interface IServices
+    public interface IMyServices
     {
         int CheckPassword(string password);
         User CreateUser(User user);
-        User GetUserById(int id);
-        User Login(string userName, string password);
+        Task<User> GetUserById(int id);
+        Task<User> Login(string userName, string password);
         void UpDateUser(int id, User userToUpdate);
     }
 }

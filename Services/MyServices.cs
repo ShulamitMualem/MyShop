@@ -2,15 +2,15 @@
 using Repository;
 namespace Services
 {
-    public class MyServices : IServices
+    public class MyServices : IMyServices
     {
-        IRepository repository;
-        public MyServices(IRepository myRepository)
+        IMyRepository repository;
+        public MyServices(IMyRepository myRepository)
         {
             repository = myRepository;
         }
 
-        public User GetUserById(int id)
+        public Task<User> GetUserById(int id)
         {
             return repository.GetUserById(id);
         }
@@ -22,9 +22,9 @@ namespace Services
         {
             if (CheckPassword(userToUpdate?.Password) < 3)
                 throw new Exception("סיסמה חלשה מדי");
-           repository.UpDateUser(id, userToUpdate);
+            repository.UpDateUser(id, userToUpdate);
         }
-        public User Login(string userName, string password)
+        public Task<User> Login(string userName, string password)
         {
             return repository.Login(userName, password);
         }
