@@ -38,9 +38,9 @@ namespace MyShop.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public ActionResult Post([FromBody] User user)
+        public async Task<ActionResult> Post([FromBody] User user)
         {
-            User newUser = services.CreateUser(user);
+            User newUser =await services.CreateUser(user);
             if(newUser!=null)
                 return CreatedAtAction(nameof(Get), new { id = newUser.UserId }, newUser);
             return BadRequest("סיסמתך חלשה מדי");
@@ -54,9 +54,9 @@ namespace MyShop.Controllers
         }
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] User userToUpdate)
+        public async Task Put(int id, [FromBody] User userToUpdate)
         {
-            services.UpDateUser(id,userToUpdate);
+           await services.UpDateUser(id,userToUpdate);
         }
         [HttpPost("password")]
         public IActionResult CheckPassword([FromQuery] string password)

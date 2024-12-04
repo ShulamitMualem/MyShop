@@ -14,15 +14,15 @@ namespace Services
         {
             return repository.GetUserById(id);
         }
-        public User CreateUser(User user)
+        public Task<User> CreateUser(User user)
         {
             return CheckPassword(user?.Password) < 3 ? null : repository.CreateUser(user);
         }
-        public void UpDateUser(int id, User userToUpdate)
+        public async Task UpDateUser(int id, User userToUpdate)
         {
             if (CheckPassword(userToUpdate?.Password) < 3)
                 throw new Exception("סיסמה חלשה מדי");
-            repository.UpDateUser(id, userToUpdate);
+            await repository.UpDateUser(id, userToUpdate);
         }
         public Task<User> Login(string userName, string password)
         {
