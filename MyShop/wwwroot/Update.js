@@ -31,9 +31,11 @@ const updateUser = async () => {
             },
             body: JSON.stringify(updateUser)
         })
+        //if response.status==400
+        //week password
+
         if (!responseput.ok)
             throw new Error(`HTTP error! status ${responsePost.status}`)
-
 
         if (responseput.status==200)
             alert(`פרטי משתמש ${currentUser.userId} עודכנו בהצלחה!`)
