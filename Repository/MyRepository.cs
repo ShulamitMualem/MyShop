@@ -14,14 +14,17 @@ namespace Repository
         public async Task<User> GetUserById(int id)
         {
             User user = await _dbcontext.Users.FindAsync(id);
-            return user == null ? null : user;
+            //return user == null ? null : user;
+            return user; //if its null- will return null
         }
-        public User CreateUser(User user)
+        public async Task<User> CreateUser(User user)
         {
-            _dbcontext.Users.Add(user);
-            return user;
+            var res= await _dbcontext.Users.AddAsync(user);
+            await _dbcontext.SaveChangesAsync();
+            return res;// - the created user with the id
+            //return user;
         }
-        public async Task UpDateUser(int id, User userToUpdate)
+        public async Task UpDateUser(int id, User userToUpdate)//return user
         {
             User user = await _dbcontext.Users.FindAsync(id);
             user = userToUpdate;
