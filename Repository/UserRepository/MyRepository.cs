@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Linq;
-namespace Repository
+namespace Repository.UserRepository
 {
     public class MyRepository : IMyRepository
     {
@@ -13,7 +13,7 @@ namespace Repository
         }
         public async Task<User> GetUserById(int id)
         {
-            User user = await _dbcontext.Users.FindAsync(id);
+            User user = await _dbcontext.Users.Include(user=>user.Orders).FirstOrDefaultAsync(user=>user.UserId==id);
             return user == null ? null : user;
         }
         public async Task<User> CreateUser(User user)
@@ -25,7 +25,7 @@ namespace Repository
         public async Task UpDateUser(int id, User userToUpdate)
         {
             userToUpdate.UserId = id;
-            _dbcontext.Update(userToUpdate);
+            _dbcontext.Users.Update(userToUpdate);
             await _dbcontext.SaveChangesAsync();
         }
         public async Task<User> Login(string userName, string password)

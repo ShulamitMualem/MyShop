@@ -1,6 +1,6 @@
 ﻿using Entity;
 
-namespace Repository
+namespace Repository.UserRepository
 {
     public interface IMyRepository
     {

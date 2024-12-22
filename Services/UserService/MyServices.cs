@@ -1,6 +1,6 @@
 ﻿using Entity;
-using Repository;
-namespace Services
+using Repository.UserRepository;
+namespace Services.UserService
 {
     public class MyServices : IMyServices
     {
@@ -10,13 +10,13 @@ namespace Services
             repository = myRepository;
         }
 
-        public Task<User> GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            return repository.GetUserById(id);
+            return await repository.GetUserById(id);
         }
-        public Task<User> CreateUser(User user)
+        public async Task<User> CreateUser(User user)
         {
-            return CheckPassword(user?.Password) < 3 ? null : repository.CreateUser(user);
+            return CheckPassword(user?.Password) < 3 ? null : await repository.CreateUser(user);
         }
         public async Task UpDateUser(int id, User userToUpdate)
         {
@@ -24,9 +24,9 @@ namespace Services
                 throw new Exception("סיסמה חלשה מדי");
             await repository.UpDateUser(id, userToUpdate);
         }
-        public Task<User> Login(string userName, string password)
+        public async Task<User> Login(string userName, string password)
         {
-            return repository.Login(userName, password);
+            return await repository.Login(userName, password);
         }
         public int CheckPassword(string password)
         {
