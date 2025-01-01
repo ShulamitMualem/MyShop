@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-    public record UserGetById(string UserName, string FirstName, string LastName, List<OrderDTO> Orders);
+    public record UserGetById(string UserName, string FirstName, string LastName);
     public record CreateUser( string UserName, string FirstName, string LastName, string Password);
         
 }
