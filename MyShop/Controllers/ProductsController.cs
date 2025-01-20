@@ -21,9 +21,9 @@ namespace MyShop.Controllers
         }
         [HttpGet]
         // GET: api/<ProductsController>
-        public async Task<ActionResult<List<ProductDTO>>> GetProducts()
+        public async Task<ActionResult<List<Product>>> Get([FromQuery]int position, [FromQuery] int skip, [FromQuery] string? nameSearch, [FromQuery] int? minPrice, [FromQuery] int? maxPrice, [FromQuery] int?[] categoryIds)
         {
-            List<Product> products = await _productService.GetAllProducts();
+            List<Product> products = await _productService.Get(position, skip, nameSearch, minPrice, maxPrice, categoryIds);
             List<ProductDTO> productsDTOs = _mapper.Map<List<Product>, List<ProductDTO>>(products);
             return products != null ? Ok(productsDTOs) : NoContent();
         }

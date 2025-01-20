@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 namespace Repository.UserRepository
 {
     public class MyRepository : IMyRepository

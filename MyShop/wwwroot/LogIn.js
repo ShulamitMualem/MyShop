@@ -94,7 +94,7 @@ const Login = async () => {
         const dataPost = await responsePost.json();
         sessionStorage.setItem("user", JSON.stringify(dataPost))
         console.log(dataPost)
-        window.location.href = "Update.html"
+        window.location.href = "ShoppingBag.html"
     }
     catch (error) {
         alert(error)

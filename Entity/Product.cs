@@ -15,6 +15,7 @@ public partial class Product
     public int CaregoryId { get; set; }
 
     public string? Description { get; set; }
+    public string? ImgUrl { get; set; }
 
     public virtual Category Caregory { get; set; } = null!;
 

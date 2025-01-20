@@ -4,6 +4,6 @@ namespace Repository.ProductsRepo
 {
     public interface IProductsRepository
     {
-        Task<List<Product>> GetProducts();
+        Task<List<Product>> Get(int position, int skip, string? desc, int? minPrice, int? maxPrice, int?[] categoryIds);
     }
 }

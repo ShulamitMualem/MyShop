@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace DTO
 {
     public record OrderDTO(DateOnly? OrserDate, decimal? OrderSum, string? UserUserName);
-    public record CreateOrderDTO(DateOnly? OrserDate, decimal? OrderSum, int UserId,List<OrderItemDTO> OrderItem);
+    public record CreateOrderDTO(decimal? OrderSum, int UserId,List<OrderItemDTO> OrderItem);
     public record OrderItemDTO(int? ProductId, int? Quantity);
 }

@@ -17,10 +17,12 @@ namespace MyShop.Controllers
     {
         IMyServices services ;
         IMapper _mapper;
-        public UsersController(IMyServices myServices, IMapper mapper)
+        ILogger<UsersController> _logger;
+        public UsersController(IMyServices myServices, IMapper mapper, ILogger<UsersController> logger)
         {
             services = myServices;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -50,6 +52,7 @@ namespace MyShop.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<User>> LogIn([FromQuery] string userName, string password)
         {
+            _logger.LogCritical($"Login attempted with user name: {userName} and password: {password}");
             User user = await services.Login(userName, password);
             return user != null ? Ok(user) : NoContent();
         }

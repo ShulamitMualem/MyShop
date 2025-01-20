@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,4 +18,6 @@ public partial class User
     [Required]
     public string Password { get; set; } = null!;
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+
 }
