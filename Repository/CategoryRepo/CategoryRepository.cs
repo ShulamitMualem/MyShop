@@ -18,7 +18,7 @@ namespace Repository.CategoryRepo
         public async Task<List<Category>> GetAllCategories()
         {
             List<Category> categories = await _dbcontext.Categories.ToListAsync();
-            return categories == null ? null : categories;
+            return categories == null ? null : categories;// return categories, if they are null will return null.
         }
         
     }
