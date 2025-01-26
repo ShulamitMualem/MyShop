@@ -1,7 +1,7 @@
 ﻿const arrFilterCategories=[]
 const getCategories = async () => {
     try {
-        const categories = await fetch(`https://localhost:44379/api/Categories`)
+        const categories = await fetch(`https://localhost:44379/api/Categories`) //just api/Categories
         const allCategories = await categories.json();
         return allCategories
     }
@@ -88,9 +88,9 @@ const addToCart = (product) => {
 
 const getProducts = async () => {
     const filters = await getFilters()
-    let url = `api/Products?nameSearch=${filters.nameSearch}&minPrice=${filters.minPrice}&maxPrice=${filters.maxPrice}`
+    let url = `api/Products?nameSearch=${filters.nameSearch}&minPrice=${filters.minPrice}&maxPrice=${filters.maxPrice}`// check if each item has value, and then add it to url
     if (arrFilterCategories.length > 0)
-        for (var i = 0; i < arrFilterCategories.length; i++) {
+        for (var i = 0; i < arrFilterCategories.length; i++) {// map is nicer
             url += `&categoryIds=${arrFilterCategories[i]}`
         }
         

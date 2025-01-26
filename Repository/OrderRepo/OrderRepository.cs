@@ -19,7 +19,7 @@ namespace Repository.NewFolder
         public async Task<Order> GetOrderById(int id)
         {
             Order order = await _dbcontext.Orders.Include(currentOrder=>currentOrder.User).FirstOrDefaultAsync(currentOrder => currentOrder.OrderId== id);
-            return order == null ? null : order;
+            return order == null ? null : order;// return order, if its null will return null.
         }
         public async Task<Order> CreateOrder(Order newOrder)
         {
