@@ -48,10 +48,11 @@ const showProductsCard = () => {
 }
 const payment = async () => {
     const orderList = getUserOrder()
-    const toClearseSsionStorage = await createOrder(orderList)
-    if (toClearseSsionStorage) {
+    const newOrder = await createOrder(orderList)
+    if (newOrder) {
+        console.log("הזמנתך התקבלה בהצלחה")
         sessionStorage.removeItem("orderList")
-        window.location.href='Products.html'
+     //   window.location.href='Products.html'
     }
 }
 const loadOrderList = () => {
@@ -71,7 +72,6 @@ const createOrderPost = (listOrderItem) => {
 const createOrder = async (orderList) => {
     if (!sessionStorage.getItem("user")) {
         window.location.href = 'Login.html'
-
         return null
     }
 
@@ -92,5 +92,6 @@ const createOrder = async (orderList) => {
     }
     catch (error) {
         console.log(dataPost)
+        return null
     }
 }
