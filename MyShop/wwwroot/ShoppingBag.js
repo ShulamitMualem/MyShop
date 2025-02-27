@@ -52,7 +52,7 @@ const payment = async () => {
     if (newOrder) {
         console.log("הזמנתך התקבלה בהצלחה")
         sessionStorage.removeItem("orderList")
-     //   window.location.href='Products.html'
+        window.location.href='Products.html'
     }
 }
 const loadOrderList = () => {
