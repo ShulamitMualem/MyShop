@@ -1,5 +1,6 @@
 ﻿using Entity;
 using Repository.NewFolder;
+using Repository.ProductsRepo;
 using Repository.UserRepository;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,11 @@ namespace Services.OrderService
     public class OrderService : IOrderService
     {
         IOrderRepository _orderRepository;
-        public OrderService(IOrderRepository orderRepository)
+        IProductsRepository _productsRepository;
+        public OrderService(IOrderRepository orderRepository, IProductsRepository productsRepository)
         {
             _orderRepository = orderRepository;
+            _productsRepository = productsRepository;
         }
 
         public async Task<Order> GetOrderById(int id)
@@ -23,7 +26,20 @@ namespace Services.OrderService
         }
         public async Task<Order> CreateOrder(Order newOrder)
         {
+            if(!await CheckSum(newOrder))
+                return null;
+
             return await _orderRepository.CreateOrder(newOrder);
+        }
+        private async Task<bool> CheckSum(Order order)
+        {
+            List<Product> products = await _productsRepository.Get(0,0,null,null,null, []);
+            decimal amount= 0;
+            foreach (var item in order.OrderItems)
+            {
+               amount+= products.Find(product=>product.ProductId==item.ProductId).Price;
+            }
+            return amount == order.OrderSum;
         }
     }
 }

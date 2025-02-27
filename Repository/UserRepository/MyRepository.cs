@@ -23,11 +23,12 @@ namespace Repository.UserRepository
             await _dbcontext.SaveChangesAsync();
             return user;
         }
-        public async Task UpDateUser(int id, User userToUpdate)
+        public async Task<User> UpDateUser(int id, User userToUpdate)
         {
             userToUpdate.UserId = id;
-            _dbcontext.Users.Update(userToUpdate);
+         _dbcontext.Users.Update(userToUpdate);
             await _dbcontext.SaveChangesAsync();
+            return userToUpdate;
         }
         public async Task<User> Login(string userName, string password)
         {

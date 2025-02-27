@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyShop.Middleware;
 using NLog.Web;
+using PresidentsApp.Middlewares;
 using Repository;
 using Repository.CategoryRepo;
 using Repository.NewFolder;
@@ -44,7 +45,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseErrorHandlingMiddleware();
 
 app.UseHttpsRedirection();
 

@@ -34,7 +34,7 @@ namespace MyShop.Controllers
             Order newOrder = _mapper.Map<CreateOrderDTO, Order>(newOrderDTO);
             Order order = await _orderService.CreateOrder(newOrder);
             OrderDTO orderDTO = _mapper.Map<Order, OrderDTO>(order);
-            return orderDTO == null ? NoContent() : Ok(orderDTO);
+            return orderDTO == null ? BadRequest() : CreatedAtAction(nameof(Get),new { id = newOrder.OrderId },newOrder);
         }
     }
 }

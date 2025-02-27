@@ -35,8 +35,12 @@ const updateUser = async () => {
             throw new Error(`HTTP error! status ${responsePost.status}`)
 
 
-        if (responseput.status==200)
+        if (responseput.status == 200) {
             alert(`פרטי משתמש ${currentUser.userId} עודכנו בהצלחה!`)
+            sessionStorage.setItem("user", JSON.stringify(await responseput.json()))
+            window.location.href = "HomePage.html"
+        }
+
     }
     catch (error) {
         alert("מצטערים משהו השתשב נסה שוב...\nהשגיאה:"+error)

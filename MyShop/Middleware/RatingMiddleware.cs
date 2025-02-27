@@ -16,7 +16,7 @@ namespace MyShop.Middleware
             _next = next;
         }
 
-        public Task Invoke(HttpContext httpContext, IRatingService ratingService)
+        public async Task Invoke(HttpContext httpContext, IRatingService ratingService)
         {
             Rating newRating = new() { 
                 Host = httpContext.Request.Host.ToString(), 
@@ -25,8 +25,8 @@ namespace MyShop.Middleware
                 RecordDate = DateTime.Now, 
                 Referer = httpContext.Request.Headers.Referer, 
                 UserAgent = httpContext.Request.Headers.UserAgent };
-            ratingService.CreateRating(newRating);
-            return _next(httpContext);
+          await  ratingService.CreateRating(newRating);
+            await _next(httpContext);
 
         }
     }

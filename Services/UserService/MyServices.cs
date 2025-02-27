@@ -18,11 +18,11 @@ namespace Services.UserService
         {
             return CheckPassword(user?.Password) < 3 ? null : await repository.CreateUser(user);
         }
-        public async Task UpDateUser(int id, User userToUpdate)
+        public async Task<User> UpDateUser(int id, User userToUpdate)
         {
             if (CheckPassword(userToUpdate?.Password) < 3)
                 throw new Exception("סיסמה חלשה מדי");
-            await repository.UpDateUser(id, userToUpdate);
+           return await repository.UpDateUser(id, userToUpdate);
         }
         public async Task<User> Login(string userName, string password)
         {
