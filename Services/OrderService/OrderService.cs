@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Microsoft.Extensions.Logging;
 using Repository.NewFolder;
 using Repository.ProductsRepo;
 using Repository.UserRepository;
@@ -14,10 +15,13 @@ namespace Services.OrderService
     {
         IOrderRepository _orderRepository;
         IProductsRepository _productsRepository;
-        public OrderService(IOrderRepository orderRepository, IProductsRepository productsRepository)
+        ILogger<OrderService> _logger;
+
+        public OrderService(IOrderRepository orderRepository, IProductsRepository productsRepository, ILogger<OrderService> logger)
         {
             _orderRepository = orderRepository;
             _productsRepository = productsRepository;
+            _logger = logger;
         }
 
         public async Task<Order> GetOrderById(int id)
@@ -27,7 +31,10 @@ namespace Services.OrderService
         public async Task<Order> CreateOrder(Order newOrder)
         {
             if(!await CheckSum(newOrder))
-                return null;
+               {
+                _logger.LogCritical("someone try to still your shop!!!!!!!!!!!");
+                return null; 
+            }
 
             return await _orderRepository.CreateOrder(newOrder);
         }

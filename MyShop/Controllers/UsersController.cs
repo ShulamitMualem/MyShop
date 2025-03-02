@@ -4,6 +4,7 @@ using Entity;
 using Services.UserService;
 using DTO;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,11 +19,14 @@ namespace MyShop.Controllers
         IMyServices services;
         IMapper _mapper;
         ILogger<UsersController> _logger;
-        public UsersController(IMyServices myServices, IMapper mapper, ILogger<UsersController> logger)
+        IMemoryCache _cache;
+
+        public UsersController(IMyServices myServices, IMapper mapper, ILogger<UsersController> logger,IMemoryCache cache)
         {
             services = myServices;
             _mapper = mapper;
             _logger = logger;
+            _cache = cache;
         }
 
 

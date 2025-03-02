@@ -17,6 +17,23 @@ using Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+string connectionString;
+
+if (environment == "Home")
+{
+    connectionString = builder.Configuration.GetConnectionString("Home");
+}
+else if (environment == "School")
+{
+    connectionString = builder.Configuration.GetConnectionString("School");
+}
+else
+{
+    throw new Exception("Unknown environment");
+}
+
 // Add services to the container.
 builder.Services.AddScoped<IMyRepository, MyRepository>();
 builder.Services.AddScoped<IMyServices, MyServices>();
@@ -28,8 +45,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
-builder.Services.AddDbContext<MyShop328264650Context>(options => options.UseSqlServer("Server=SRV2\\PUPILS;Database=MyShop_328264650;Trusted_Connection=True;TrustServerCertificate=True"));
-
+builder.Services.AddDbContext<MyShop328264650Context>(options => options.UseSqlServer(connectionString));
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

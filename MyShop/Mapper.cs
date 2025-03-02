@@ -3,7 +3,7 @@ using DTO;
 using Entity;
 namespace MyShop
 {
-    public class Mapper:Profile
+    public class Mapper : Profile
     {
         public Mapper()
         {
@@ -12,7 +12,9 @@ namespace MyShop
             CreateMap<Order, OrderDTO>();
             CreateMap<User, UserGetById>();
             CreateMap<CreateUser, User>();
-            CreateMap<CreateOrderDTO, Order>();
+            CreateMap<CreateOrderDTO, Order>()
+                                .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItem));
+
             CreateMap<Order, OrderDTO>();
         }
     }

@@ -2,6 +2,7 @@
 using DTO;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Services.OrderService;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,16 +15,23 @@ namespace MyShop.Controllers
     {
         IOrderService _orderService;
         IMapper _mapper;
-        public OrdersController(IOrderService orderService, IMapper mapper)
+        IMemoryCache _cache;
+
+        public OrdersController(IOrderService orderService, IMapper mapper,IMemoryCache cache)
         {
             _orderService = orderService;
             _mapper = mapper;
+            _cache = cache;
         }
         // GET api/<OrdersController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDTO>> Get(int id)
         {
-            Order order = await _orderService.GetOrderById(id);
+            if (!_cache.TryGetValue("order", out Order order))
+            {
+                order = await _orderService.GetOrderById(id);
+                _cache.Set("order", order, TimeSpan.FromMinutes(10));
+            }
             OrderDTO orderDTO= _mapper.Map<Order, OrderDTO>(order);
             return orderDTO == null ? NoContent() : Ok(orderDTO);
         }

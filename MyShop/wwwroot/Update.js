@@ -38,7 +38,7 @@ const updateUser = async () => {
         if (responseput.status == 200) {
             alert(`פרטי משתמש ${currentUser.userId} עודכנו בהצלחה!`)
             sessionStorage.setItem("user", JSON.stringify(await responseput.json()))
-            window.location.href = "HomePage.html"
+            window.location.href = "Products.html"
         }
 
     }

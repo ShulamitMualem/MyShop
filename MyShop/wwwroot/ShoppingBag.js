@@ -50,7 +50,8 @@ const payment = async () => {
     const orderList = getUserOrder()
     const newOrder = await createOrder(orderList)
     if (newOrder) {
-        console.log("הזמנתך התקבלה בהצלחה")
+        const myOrder = await newOrder.json()
+        alert(` הזמנתך מספר ${myOrder.orderId} התקבלה בהצלחה`)
         sessionStorage.removeItem("orderList")
         window.location.href='Products.html'
     }
