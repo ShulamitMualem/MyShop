@@ -1,109 +1,99 @@
-﻿
-const getAllDetilesForLogin = () => {
-    return user = {
-        UserName: document.querySelector("#userNameLogin").value,
-        Password: document.querySelector("#passwordLogin").value,
-    }
-}
-const getAllDetilesForSignUp = () => {
-    return newUser = {
-        UserName: document.querySelector("#userName").value,
-        Password: document.querySelector("#password").value,
-        FirstName: document.querySelector("#firstName").value,
-        LastName: document.querySelector("#lastName").value
-    }
-}
+﻿const getInputValue = (selector) => document.querySelector(selector)?.value.trim() || "";
 
-const checkData = (user) => {
-    return (user.UserName&&user.Password)
-}
+const getAllDetailsForLogin = () => ({
+    UserName: getInputValue("#userNameLogin"),
+    Password: getInputValue("#passwordLogin"),
+});
+
+const getAllDetailsForSignUp = () => {
+    const newUser = {
+        UserName: getInputValue("#userName"),
+        Password: getInputValue("#password"),
+        FirstName: getInputValue("#firstName"),
+        LastName: getInputValue("#lastName"),
+    };
+
+    if (Object.values(newUser).some(value => !value)) {
+        alert("כל השדות הם חובה. נא למלא את כולם.");
+        return null;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newUser.UserName)) {
+        alert("כתובת האימייל אינה תקינה.");
+        return null;
+    }
+
+    if (newUser.FirstName.length > 20 || newUser.LastName.length > 20) {
+        alert("שם פרטי ושם משפחה עד 20 תווים בלבד.");
+        return null;
+    }
+
+    return newUser;
+};
+
+const isValidUser = (user) => user.UserName && user.Password;
+
 const checkPassword = async () => {
-    const password = document.querySelector("#password").value
-    let result = document.querySelector("#checkPassword")
-    try {
-        const responsePost = await fetch(`https://localhost:44379/api/Users/password?password=${password}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
-        if (!responsePost.ok) {
-            const dataPost = await responsePost.json();
-            console.log(dataPost)
-            result.value = dataPost
-            throw new Error("סיסמה לא חזקה")
-        }
-        const dataPost = await responsePost.json();
-        console.log(dataPost)
-        result.value = dataPost
+    const password = getInputValue("#password");
+    const resultElement = document.querySelector("#checkPassword");
 
+    try {
+        const response = await fetch(`api/Users/password?password=${password}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+        resultElement.value = data;
+
+        if (!response.ok) throw new Error("סיסמה לא חזקה");
+    } catch (error) {
+        alert(error.message);
     }
-    catch (error) {
-        throw (error)
-    }
-}
+};
+
 const addNewUser = async () => {
+    const newUser = getAllDetailsForSignUp();
+    if (!newUser) return;
 
-    const newUser = getAllDetilesForSignUp()
-   
     try {
-       await checkPassword()
-        const responsePost = await fetch(`https://localhost:44379/api/Users`, {
+        await checkPassword();
+
+        const response = await fetch(`api/Users`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newUser)
-        })
-            if (responsePost.status == 400)
-            throw new Error("!כל השדות חובה, בדוק את תקינותם")
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newUser),
+        });
 
-            if (!responsePost.ok)
-            throw new Error("משהו השתבש נסה שוב")
+        if (response.status === 400) throw new Error("!כל השדות חובה, בדוק את תקינותם");
+        if (!response.ok) throw new Error("משהו השתבש, נסה שוב");
 
-            const postData = responsePost.json()
-       
+        console.log(await response.json());
+    } catch (error) {
+        alert(error.message);
     }
-    catch (error) {
-        alert( error)
+};
+
+const showRegister = () => document.querySelector(".signUpDiv")?.classList.remove("signUpDiv");
+
+const login = async () => {
+    const user = getAllDetailsForLogin();
+    if (!isValidUser(user)) return alert("כל השדות חובה");
+
+    try {
+        const response = await fetch(`api/Users/login?userName=${user.UserName}&password=${user.Password}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (response.status === 400) throw new Error("כל השדות חובה");
+        if (response.status === 204) throw new Error("משתמש לא רשום");
+        if (!response.ok) throw new Error("משהו השתבש, נסה שוב");
+
+        const data = await response.json();
+        sessionStorage.setItem("user", JSON.stringify(data));
+        window.location.href = "ShoppingBag.html";
+    } catch (error) {
+        alert(error.message);
     }
-
-
-}
-const showRegister = () => {
-    const divREgister = document.querySelector(".signUpDiv")
-    divREgister.classList.remove("signUpDiv")
-}
-const Login = async () => {
-    const newUser = getAllDetilesForLogin()
-    try { 
-    const responsePost = await fetch(`https://localhost:44379/api/Users/login?userName=${newUser.UserName}&password=${newUser.Password}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        }
-
-    })
-    if (responsePost.status == 400)
-        throw new Error("כל השדות חובה")
-    if (responsePost.status == 204)
-        throw new Error("משתמש לא רשום")
-    if (!responsePost.ok)
-        throw new Error("משהו השתבש נסה שוב")
-
-        const dataPost = await responsePost.json();
-        sessionStorage.setItem("user", JSON.stringify(dataPost))
-        console.log(dataPost)
-        window.location.href = "ShoppingBag.html"
-    }
-    catch (error) {
-        alert(error)
-    }
-
-
-
-
-}
-
-
-
+};

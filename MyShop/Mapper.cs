@@ -12,10 +12,9 @@ namespace MyShop
             CreateMap<Order, OrderDTO>();
             CreateMap<User, UserGetById>();
             CreateMap<CreateUser, User>();
-            CreateMap<CreateOrderDTO, Order>()
-                                .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItem));
-
+            CreateMap<CreateOrderDTO, Order>();
             CreateMap<Order, OrderDTO>();
+            CreateMap<OrderItemDTO, OrderItem>();
         }
     }
 }

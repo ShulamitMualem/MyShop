@@ -1,98 +1,91 @@
-﻿const getUserOrder = () => {
-    const orderList = JSON.parse(sessionStorage.getItem("orderList")) || [];
-    return orderList;
-}
+﻿const getUserOrder = () => JSON.parse(sessionStorage.getItem("orderList")) || [];
+
+const updateOrderList = (orderList) => {
+    sessionStorage.setItem("orderList", JSON.stringify(orderList));
+    showProductsCard();
+    updateOrderSummary();
+};
+
 const deleteItem = (product) => {
-    let orderList = getUserOrder()
-    for (let i = 0; i < orderList.length; i++) {
-        if (orderList[i].productId == product.productId) {
-            orderList.splice(i,1)
-            break;
-        }
-      
-    }
+    let orderList = getUserOrder();
+    orderList = orderList.filter(item => item.productId !== product.productId);
+    updateOrderList(orderList);
+};
 
-    sessionStorage.setItem("orderList", JSON.stringify(orderList))
-    showProductsCard()
-    calculateCountAndAmount()
-}
 const drawOneProduct = (product) => {
-    let tmp = document.getElementById('temp-row');
-    let cloneProduct = tmp.content.cloneNode(true)
-    cloneProduct.querySelector('.image').style.backgrounImage = `url(${product.imgUrl})`   
-    cloneProduct.querySelector('.itemName').textContent = product.productName
-    cloneProduct.querySelector('.itemNumber').innerText = product.price
-    cloneProduct.querySelector('.price').innerText = product.price
-    cloneProduct.querySelector('.DeleteButton').addEventListener("click", () => { deleteItem(product) })
-    document.querySelector('.cistGroup').appendChild(cloneProduct)
-}
-const calculateCountAndAmount = () => {
-    const orderList = getUserOrder()
-    let totalAmount = 0
-    orderList.map(item =>totalAmount+= item.price)
+    const template = document.getElementById("temp-row");
+    const cloneProduct = template.content.cloneNode(true);
 
-    document.getElementById("totalAmount").innerText = totalAmount
-    document.getElementById("itemCount").innerText = orderList.length
-}
+    cloneProduct.querySelector(".image").style.backgroundImage = `url(${product.imgUrl})`;
+    cloneProduct.querySelector(".itemName").textContent = product.productName;
+    cloneProduct.querySelector(".itemNumber").innerText = product.price;
+    cloneProduct.querySelector(".price").innerText = product.price;
+    cloneProduct.querySelector(".DeleteButton").addEventListener("click", () => deleteItem(product));
+
+    document.querySelector(".cistGroup").appendChild(cloneProduct);
+};
+
+const updateOrderSummary = () => {
+    const orderList = getUserOrder();
+    const totalAmount = orderList.reduce((sum, item) => sum + item.price, 0);
+
+    document.getElementById("totalAmount").innerText = totalAmount;
+    document.getElementById("itemCount").innerText = orderList.length;
+};
+
 const clearProductsHTML = () => {
-    document.querySelector(".cistGroup").innerHTML = ""
-}
+    document.querySelector(".cistGroup").innerHTML = "";
+};
+
 const showProductsCard = () => {
-    clearProductsHTML()
-    const orderList =  getUserOrder()
-    if (orderList) {
-        orderList?.forEach(orderItem => {
-            drawOneProduct(orderItem)
-        })
-    }
-}
-const payment = async () => {
-    const orderList = getUserOrder()
-    const newOrder = await createOrder(orderList)
+    clearProductsHTML();
+    getUserOrder().forEach(drawOneProduct);
+};
+
+const processPayment = async () => {
+    const orderList = getUserOrder();
+    const newOrder = await createOrder(orderList);
+
     if (newOrder) {
-        const myOrder = await newOrder.json()
-        alert(` הזמנתך מספר ${myOrder.orderId} התקבלה בהצלחה`)
-        sessionStorage.removeItem("orderList")
-        window.location.href='Products.html'
+        alert(`הזמנתך מספר ${newOrder.orderId} התקבלה בהצלחה`);
+        sessionStorage.removeItem("orderList");
+        window.location.href = "Products.html";
     }
-}
-const loadOrderList = () => {
+};
+
+const initializeOrderPage = () => {
     window.addEventListener("load", () => {
-        showProductsCard()
-    })
-}
-loadOrderList()
-calculateCountAndAmount()
-const createOrderPost = (listOrderItem) => {
-   return orderPost = {
-       orderSum: document.getElementById("totalAmount").textContent,
-       userId: JSON.parse(sessionStorage.getItem("user")).userId,
-       orderItem: listOrderItem.map(item => { return { productId: item.productId, quantity:1 } })
-    }
-}
+        showProductsCard();
+        updateOrderSummary();
+    });
+};
+
+const createOrderData = (orderList) => ({
+    orderSum: document.getElementById("totalAmount").textContent,
+    userId: JSON.parse(sessionStorage.getItem("user"))?.userId,
+    orderItem: orderList.map(item => ({ productId: item.productId, quantity: 1 })),
+});
+
 const createOrder = async (orderList) => {
     if (!sessionStorage.getItem("user")) {
-        window.location.href = 'Login.html'
-        return null
+        window.location.href = "Login.html";
+        return null;
     }
 
-    const createOrder = createOrderPost(orderList)
+    const orderData = createOrderData(orderList);
+
     try {
-        const order = await fetch('api/Orders', {
-            method: 'Post',
-            headers: {
-                'content-Type': 'application/json'
-            },
-          
-                body: JSON.stringify(createOrder)
-            
-        })
-        const newOrder = await order.json();
-        console.log(newOrder)
-        return newOrder
+        const response = await fetch("api/Orders", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderData),
+        });
+
+        return response.ok ? await response.json() : null;
+    } catch (error) {
+        console.error("Error creating order:", error);
+        return null;
     }
-    catch (error) {
-        console.log(dataPost)
-        return null
-    }
-}
+};
+
+initializeOrderPage();

@@ -15,7 +15,7 @@ namespace Repository.UserRepository
         public async Task<User> GetUserById(int id)
         {
             User user = await _dbcontext.Users.Include(user=>user.Orders).FirstOrDefaultAsync(user=>user.UserId==id);
-            return user == null ? null : user;
+            return user;
         }
         public async Task<User> CreateUser(User user)
         {

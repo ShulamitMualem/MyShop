@@ -1,123 +1,115 @@
-﻿const arrFilterCategories=[]
+﻿const arrFilterCategories = [];
+
 const getCategories = async () => {
     try {
-        const categories = await fetch(`https://localhost:44379/api/Categories`)
-        const allCategories = await categories.json();
-        return allCategories
+        const response = await fetch('api/Categories');
+        return await response.json();
+    } catch (error) {
+        console.error('שגיאה בהבאת קטגוריות:', error);
     }
-    catch (error) {
-        console.log(dataPost)
-    }
-}
+};
 
 const clearProductsHTML = () => {
-   document.querySelector("#ProductList").innerHTML = ""
-}
+    document.querySelector("#ProductList").innerHTML = "";
+};
 
 const showProductsCard = async () => {
-    await clearProductsHTML()
-    const products = await getProducts()
+    await clearProductsHTML();
+    const products = await getProducts();
     if (products) {
-        products?.forEach(product => {
-            drawOneProduct(product)
-        })
+        products.forEach(drawOneProduct);
     }
-        
+};
 
-}
 const showCategories = async () => {
-    const categories = await getCategories()
+    const categories = await getCategories();
     if (categories) {
-        categories.forEach(category => {
-            drawOneCategory(category)
-        })
+        categories.forEach(drawOneCategory);
     }
+};
 
-
-}
 const addFilterCategory = (e, category) => {
     if (e) {
-        arrFilterCategories.push(category.categoryId)
+        arrFilterCategories.push(category.categoryId);
+    } else {
+        const indexCategory = arrFilterCategories.indexOf(category.categoryId);
+        if (indexCategory !== -1) {
+            arrFilterCategories.splice(indexCategory, 1);
+        }
     }
-    else {
-        const indexCategory = arrFilterCategories.indexOf(category)
-        arrFilterCategories.splice(indexCategory,1)
-    }
-    showProductsCard()
-}
+    showProductsCard();
+};
 
 const drawOneCategory = (category) => {
-    let tmp = document.getElementById('temp-category');
-    let cloneCategory = tmp.content.cloneNode(true)
-    cloneCategory.querySelector('.OptionName').innerText = category.categoryName
-    cloneCategory.querySelector(".opt").addEventListener("change", (e) => addFilterCategory(e.currentTarget.checked,category))
-    document.getElementById('categoryList').appendChild(cloneCategory)
-}
+    const template = document.getElementById('temp-category');
+    const clone = template.content.cloneNode(true);
+    clone.querySelector('.OptionName').innerText = category.categoryName;
+    clone.querySelector(".opt").addEventListener("change", (e) => addFilterCategory(e.currentTarget.checked, category));
+    document.getElementById('categoryList').appendChild(clone);
+};
 
 const drawOneProduct = (product) => {
-    let tmp = document.getElementById('temp-card');
-    let cloneProduct = tmp.content.cloneNode(true)
-    cloneProduct.querySelector('img').src = `./bags/${product.picture}`
-    cloneProduct.querySelector('h1').textContent = product.productName
-    cloneProduct.querySelector('.price').innerText = product.price
-    cloneProduct.querySelector('.description').innerText = product.description
-    cloneProduct.querySelector('button').addEventListener("click", () => { addToCart(product) })
-    document.getElementById('ProductList').appendChild(cloneProduct)
-}
+    const template = document.getElementById('temp-card');
+    const clone = template.content.cloneNode(true);
+    clone.querySelector('img').src = `./bags/${product.picture}`;
+    clone.querySelector('h1').textContent = product.productName;
+    clone.querySelector('.price').innerText = product.price;
+    clone.querySelector('.description').innerText = product.description;
+    clone.querySelector('button').addEventListener("click", () => addToCart(product));
+    document.getElementById('ProductList').appendChild(clone);
+};
 
 const loadProducts = () => {
-   window.addEventListener("load", () => {
-        showProductsCard()
-    })
-}
-const loadCategories = () => {
-    window.addEventListener("load", () => {
-        showCategories()
-    })
-}
-loadProducts()
-loadCategories()
+    window.addEventListener("load", showProductsCard);
+};
 
+const loadCategories = () => {
+    window.addEventListener("load", showCategories);
+};
+
+loadProducts();
+loadCategories();
 
 const addToCart = (product) => {
-    const orderList = JSON.parse(sessionStorage.getItem("orderList")) || []
-    orderList.push(product)
-    sessionStorage.setItem("orderList", JSON.stringify(orderList))
-    document.getElementById("ItemsCountText").innerText = orderList.length
-}
+    const orderList = JSON.parse(sessionStorage.getItem("orderList")) || [];
+    orderList.push(product);
+    sessionStorage.setItem("orderList", JSON.stringify(orderList));
+    document.getElementById("ItemsCountText").innerText = orderList.length;
+};
+
+const getUrlForGetProducts = async () => {
+    const filters = await getFilters();
+    const baseUrl = `api/Products?`;
+    const queryParams = [];
+
+    if (filters.nameSearch) queryParams.push(`nameSearch=${encodeURIComponent(filters.nameSearch)}`);
+    if (filters.minPrice) queryParams.push(`minPrice=${filters.minPrice}`);
+    if (filters.maxPrice) queryParams.push(`maxPrice=${filters.maxPrice}`);
+    if (arrFilterCategories.length > 0) {
+        arrFilterCategories.forEach(categoryId => {
+            queryParams.push(`categoryIds=${categoryId}`);
+        });
+    }
+
+    return baseUrl + queryParams.join("&");
+};
 
 const getProducts = async () => {
-    const filters = await getFilters()
-    let url = `api/Products?nameSearch=${filters.nameSearch}&minPrice=${filters.minPrice}&maxPrice=${filters.maxPrice}`
-    if (arrFilterCategories.length > 0)
-        for (var i = 0; i < arrFilterCategories.length; i++) {
-            url += `&categoryIds=${arrFilterCategories[i]}`
-        }
-        
-  
+    const url = await getUrlForGetProducts();
     try {
-        const products = await fetch(url, {
-            method: 'Get',
-            headers: {
-                'content-Type': 'application/json'
-            },
-            query: { categoryIds: arrFilterCategories }
-        })
-        const allProducts = await products.json();
-        const countProduct = document.getElementById("counter")
-        countProduct.innerText = allProducts.length
-        return allProducts
+        const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        const products = await response.json();
+        document.getElementById("counter").innerText = products.length;
+        return products;
+    } catch (error) {
+        console.error('שגיאה בהבאת מוצרים:', error);
     }
-    catch (error) {
-        console.log(dataPost)
-    }
-}
+};
 
-const getFilters = async() => {
-    const filters = {
-        nameSearch:document.querySelector("#nameSearch").value,
+const getFilters = async () => {
+    return {
+        nameSearch: document.querySelector("#nameSearch").value,
         minPrice: document.getElementById("minPrice").value,
         maxPrice: document.getElementById("maxPrice").value
-    }
-    return filters
-}
+    };
+};
