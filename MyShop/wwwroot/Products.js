@@ -104,7 +104,8 @@ const getProducts = async () => {
             query: { categoryIds: arrFilterCategories }
         })
         const allProducts = await products.json();
-        console.log(allProducts)
+        const countProduct = document.getElementById("counter")
+        countProduct.innerText = allProducts.length
         return allProducts
     }
     catch (error) {

@@ -34,8 +34,10 @@ namespace MyShop.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserGetById>> Get(int id)
         {
-if
-            User user = await services.GetUserById(id);
+            if (!_cache.TryGetValue("user", out User user))
+            {
+                user = await services.GetUserById(id);
+            }
             UserGetById userGetById = _mapper.Map<User, UserGetById>(user);
             return userGetById != null ? Ok(userGetById) : NoContent();
 
