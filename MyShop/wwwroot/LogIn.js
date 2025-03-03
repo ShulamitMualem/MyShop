@@ -67,8 +67,7 @@ const addNewUser = async () => {
 
         if (response.status === 400) throw new Error("!כל השדות חובה, בדוק את תקינותם");
         if (!response.ok) throw new Error("משהו השתבש, נסה שוב");
-
-        console.log(await response.json());
+        alert("משתמש נןסף בהצלחה")
     } catch (error) {
         alert(error.message);
     }

@@ -75,7 +75,7 @@ namespace TestMyShop
             var mockProductRepository = new Mock<IProductsRepository>();
             mockProductRepository.Setup(x => x.Get(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int?[]>()))
                                  .ReturnsAsync(products);
-            var orderService = new OrderService(mockOrderRepository.Object,mockProductRepository.Object);
+            var orderService = new OrderService(mockOrderRepository.Object,mockProductRepository.Object,null);
 
             // Act
             var result = await orderService.CreateOrder(order);
@@ -97,7 +97,7 @@ namespace TestMyShop
             var mockProductRepository = new Mock<IProductsRepository>();
             mockProductRepository.Setup(x => x.Get(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int?[]>()))
                                  .ReturnsAsync(products);
-            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object);
+            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object,null);
 
             // Act
             var result = await orderService.CreateOrder(order);

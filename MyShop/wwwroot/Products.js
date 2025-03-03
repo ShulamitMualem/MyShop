@@ -51,24 +51,13 @@ const drawOneCategory = (category) => {
 const drawOneProduct = (product) => {
     const template = document.getElementById('temp-card');
     const clone = template.content.cloneNode(true);
-    clone.querySelector('img').src = `./bags/${product.picture}`;
+    clone.querySelector('img').src = `./images/${product.imgUrl}`;
     clone.querySelector('h1').textContent = product.productName;
     clone.querySelector('.price').innerText = product.price;
     clone.querySelector('.description').innerText = product.description;
     clone.querySelector('button').addEventListener("click", () => addToCart(product));
     document.getElementById('ProductList').appendChild(clone);
 };
-
-const loadProducts = () => {
-    window.addEventListener("load", showProductsCard);
-};
-
-const loadCategories = () => {
-    window.addEventListener("load", showCategories);
-};
-
-loadProducts();
-loadCategories();
 
 const addToCart = (product) => {
     const orderList = JSON.parse(sessionStorage.getItem("orderList")) || [];
@@ -113,3 +102,18 @@ const getFilters = async () => {
         maxPrice: document.getElementById("maxPrice").value
     };
 };
+const loadProducts = () => {
+    window.addEventListener("load", showProductsCard);
+};
+
+const loadCategories = () => {
+    window.addEventListener("load", showCategories);
+};
+const loadProductsCount = () => {
+    const orderList = JSON.parse(sessionStorage.getItem("orderList")) || [];
+    document.getElementById("ItemsCountText").innerText = orderList.length;
+}
+
+loadProducts();
+loadCategories();
+loadProductsCount()

@@ -48,11 +48,11 @@ builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddDbContext<MyShop328264650Context>(options => options.UseSqlServer(connectionString));
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
-
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Host.UseNLog();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

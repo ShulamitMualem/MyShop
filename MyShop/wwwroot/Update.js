@@ -4,10 +4,10 @@ const setUpdatePageValues = () => {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
     if (!currentUser) return;
 
-    document.querySelector("#userNameUpdate").value = currentUser.userName;
-    document.querySelector("#passwordUpdate").value = currentUser.password;
-    document.querySelector("#firstNameUpdate").value = currentUser.firstName;
-    document.querySelector("#lastNameUpdate").value = currentUser.lastName;
+    document.querySelector("#userNameUpdate").value = currentUser.userName.trim();
+    document.querySelector("#passwordUpdate").value = currentUser.password.trim();
+    document.querySelector("#firstNameUpdate").value = currentUser.firstName.trim();
+    document.querySelector("#lastNameUpdate").value = currentUser.lastName.trim();
 };
 
 const getUpdatedUserDetails = () => {

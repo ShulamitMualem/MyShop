@@ -79,7 +79,7 @@ namespace TestMyShop
             var orderItems = new List<OrderItem>() { new() { ProductId = 1 }, new() { ProductId = 2 } };
             var order = new Order { OrderSum = 26, OrderItems = orderItems };
 
-            var orderService = new OrderService(new OrderRepository(_context) , new ProductsRepository(_context));
+            var orderService = new OrderService(new OrderRepository(_context) , new ProductsRepository(_context),null);
 
             // Act
             var result = await orderService.CreateOrder(order);
@@ -101,7 +101,7 @@ namespace TestMyShop
             var orderItems = new List<OrderItem>() { new() { ProductId = 1 }, new() { ProductId = 2 } };
             var order = new Order { OrderSum = 50, OrderItems = orderItems };
 
-            var orderService = new OrderService(new OrderRepository(_context), new ProductsRepository(_context));
+            var orderService = new OrderService(new OrderRepository(_context), new ProductsRepository(_context),null);
 
             // Act
             var result = await orderService.CreateOrder(order);

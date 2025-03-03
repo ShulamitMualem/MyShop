@@ -13,7 +13,6 @@ namespace MyShop
             CreateMap<User, UserGetById>();
             CreateMap<CreateUser, User>();
             CreateMap<CreateOrderDTO, Order>();
-            CreateMap<Order, OrderDTO>();
             CreateMap<OrderItemDTO, OrderItem>();
         }
     }

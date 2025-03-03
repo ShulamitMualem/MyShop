@@ -15,8 +15,7 @@ const deleteItem = (product) => {
 const drawOneProduct = (product) => {
     const template = document.getElementById("temp-row");
     const cloneProduct = template.content.cloneNode(true);
-
-    cloneProduct.querySelector(".image").style.backgroundImage = `url(${product.imgUrl})`;
+    cloneProduct.querySelector(".image").style.backgroundImage = `url(./images/${product.imgUrl})`;
     cloneProduct.querySelector(".itemName").textContent = product.productName;
     cloneProduct.querySelector(".itemNumber").innerText = product.price;
     cloneProduct.querySelector(".price").innerText = product.price;
@@ -28,7 +27,6 @@ const drawOneProduct = (product) => {
 const updateOrderSummary = () => {
     const orderList = getUserOrder();
     const totalAmount = orderList.reduce((sum, item) => sum + item.price, 0);
-
     document.getElementById("totalAmount").innerText = totalAmount;
     document.getElementById("itemCount").innerText = orderList.length;
 };
@@ -63,7 +61,7 @@ const initializeOrderPage = () => {
 const createOrderData = (orderList) => ({
     orderSum: document.getElementById("totalAmount").textContent,
     userId: JSON.parse(sessionStorage.getItem("user"))?.userId,
-    orderItem: orderList.map(item => ({ productId: item.productId, quantity: 1 })),
+    orderItems: orderList.map(item => ({ productId: item.productId, quantity: 1 })),
 });
 
 const createOrder = async (orderList) => {
@@ -84,6 +82,7 @@ const createOrder = async (orderList) => {
         return response.ok ? await response.json() : null;
     } catch (error) {
         console.error("Error creating order:", error);
+        alert("Error creating order")
         return null;
     }
 };
