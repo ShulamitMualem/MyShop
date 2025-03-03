@@ -5,7 +5,7 @@ const getCategories = async () => {
         const response = await fetch('api/Categories');
         return await response.json();
     } catch (error) {
-        console.error('שגיאה בהבאת קטגוריות:', error);
+       alert(e.message)
     }
 };
 
@@ -91,7 +91,7 @@ const getProducts = async () => {
         document.getElementById("counter").innerText = products.length;
         return products;
     } catch (error) {
-        console.error('שגיאה בהבאת מוצרים:', error);
+       alert('שגיאה בהבאת מוצרים');
     }
 };
 

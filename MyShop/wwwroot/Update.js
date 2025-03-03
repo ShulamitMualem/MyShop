@@ -49,7 +49,7 @@ const updateUser = async () => {
     try {
         await checkPassword();
 
-        const response = await fetch(`https://localhost:44379/api/Users/${currentUser.userId}`, {
+        const response = await fetch(`api/Users/${currentUser.userId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedUser),
@@ -70,7 +70,7 @@ const checkPassword = async () => {
     const resultElement = document.querySelector("#checkPassword");
 
     try {
-        const response = await fetch(`https://localhost:44379/api/Users/password?password=${password}`, {
+        const response = await fetch(`api/Users/password?password=${password}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         });

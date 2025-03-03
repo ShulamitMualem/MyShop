@@ -73,7 +73,7 @@ const addNewUser = async () => {
     }
 };
 
-const showRegister = () => document.querySelector(".signUpDiv")?.classList.remove("signUpDiv");
+const showRegister = () => document.querySelector('.signUpDiv').style.display = 'block';;
 
 const login = async () => {
     const user = getAllDetailsForLogin();

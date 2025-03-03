@@ -32,7 +32,7 @@ namespace Services.OrderService
         {
             if(!await CheckSum(newOrder))
                {
-                _logger.LogCritical("someone try to still your shop!!!!!!!!!!!");
+                _logger.LogCritical($"user {newOrder.UserId} try to still your shop!!!!!!!!!!!");
                 return null; 
             }
 

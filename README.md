@@ -6,7 +6,7 @@ MyShop is a RESTful Web API built with .NET 8, designed following best practices
 ### API Documentation
 The API is documented using Swagger. You can access the API documentation via the following link:
 ```
-http://localhost:5000/swagger/index.html
+https://localhost:44379/Swagger/index.html
 ```
 
 ## Project Structure
