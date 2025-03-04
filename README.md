@@ -33,13 +33,22 @@ The project is divided into multiple layers:
 - **Request Logging**: Every request is logged for analytics and rating purposes.
 
 ## Database Setup
-To set up the database, use the following commands:
+
+### Code First Approach
+To set up the database using the code first approach, use the following commands:
 ```sh
 # Add migration
 dotnet ef migrations add InitialCreate
 
 # Update database
 dotnet ef database update
+```
+
+### Database First Approach
+To set up the database using the database first approach, use the following commands:
+```sh
+# Scaffold the database
+dotnet ef dbcontext scaffold "YourConnectionString" Microsoft.EntityFrameworkCore.SqlServer -o Models
 ```
 
 ## Running the Project
@@ -60,13 +69,11 @@ The project follows clean code principles to ensure maintainability:
 - Avoiding magic numbers and hardcoded values.
 - Proper exception handling.
 
-## Contribution
-If you want to contribute, feel free to submit a pull request!
-
-## License
-This project is open-source and licensed under the MIT License.
-
 ---
 
 *For any issues or inquiries, please contact the development team.*
 
+## Contact Information
+- **Name**: Shulamit Mualem
+- **Phone**: 0548552214
+- **Email**: c0527671088@gmail.com
