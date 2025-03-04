@@ -1,4 +1,5 @@
 using Entity;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.EntityFrameworkCore;
 using Repository;
@@ -75,7 +76,9 @@ namespace TestMyShop
             var mockProductRepository = new Mock<IProductsRepository>();
             mockProductRepository.Setup(x => x.Get(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int?[]>()))
                                  .ReturnsAsync(products);
-            var orderService = new OrderService(mockOrderRepository.Object,mockProductRepository.Object,null);
+            var mockIlloger = new Mock<ILogger<OrderService>>();
+
+            var orderService = new OrderService(mockOrderRepository.Object,mockProductRepository.Object,mockIlloger.Object);
 
             // Act
             var result = await orderService.CreateOrder(order);
@@ -91,13 +94,18 @@ namespace TestMyShop
             var order = new Order { OrderSum = 45, OrderItems = orderItems };
 
             var mockOrderRepository = new Mock<IOrderRepository>();
+            var mockProductRepository = new Mock<IProductsRepository>();
+
+            var products = new List<Product> { new() { ProductId = 1, Price = 50 } };
+
+            mockProductRepository.Setup(x => x.Get(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?[]>()))
+                                 .ReturnsAsync(products);
+
             mockOrderRepository.Setup(repo => repo.CreateOrder(It.IsAny<Order>())).ReturnsAsync(order);
 
-            List<Product> products = new List<Product> { new() { ProductId = 1, Price = 50 } };
-            var mockProductRepository = new Mock<IProductsRepository>();
-            mockProductRepository.Setup(x => x.Get(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int?[]>()))
-                                 .ReturnsAsync(products);
-            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object,null);
+            var mockIlloger = new Mock<ILogger<OrderService>>();
+
+            var orderService = new OrderService(mockOrderRepository.Object, mockProductRepository.Object,mockIlloger.Object);
 
             // Act
             var result = await orderService.CreateOrder(order);

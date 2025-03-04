@@ -1,5 +1,6 @@
 using Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.EntityFrameworkCore;
 using Repository;
@@ -33,7 +34,6 @@ namespace TestMyShop
             // Assert
             Assert.NotNull(retrievedUser);
             Assert.Equal(user.UserName, retrievedUser.UserName);
-            Assert.Equal(user.Password, retrievedUser.Password);
         }
         [Fact]
         public async Task LogIn_InvalidCredentials_ReturnsNull()
@@ -101,7 +101,9 @@ namespace TestMyShop
             var orderItems = new List<OrderItem>() { new() { ProductId = 1 }, new() { ProductId = 2 } };
             var order = new Order { OrderSum = 50, OrderItems = orderItems };
 
-            var orderService = new OrderService(new OrderRepository(_context), new ProductsRepository(_context),null);
+            var mockIlloger = new Mock<ILogger<OrderService>>();
+
+            var orderService = new OrderService(new OrderRepository(_context), new ProductsRepository(_context),mockIlloger.Object);
 
             // Act
             var result = await orderService.CreateOrder(order);

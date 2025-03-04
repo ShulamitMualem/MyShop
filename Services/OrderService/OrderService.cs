@@ -40,11 +40,12 @@ namespace Services.OrderService
         }
         private async Task<bool> CheckSum(Order order)
         {
-            List<Product> products = await _productsRepository.Get(0,0,null,null,null, []);
+         //   List<Product> products = await _productsRepository.Get(0,0,null,null,null, []);
+            List<Product> products1 = await _productsRepository.Get(0, 0, null, null,null, []);
             decimal amount= 0;
             foreach (var item in order.OrderItems)
             {
-               amount+= products.Find(product=>product.ProductId==item.ProductId).Price;
+               amount+= products1.Find(product=>product.ProductId==item.ProductId).Price;
             }
             return amount == order.OrderSum;
         }
