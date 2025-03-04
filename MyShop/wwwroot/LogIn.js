@@ -66,6 +66,7 @@ const addNewUser = async () => {
         });
 
         if (response.status === 400) throw new Error("!כל השדות חובה, בדוק את תקינותם");
+        if(response.status === 409) throw new Error("שם משתמש כבר קיים")
         if (!response.ok) throw new Error("משהו השתבש, נסה שוב");
         alert("משתמש נןסף בהצלחה")
     } catch (error) {

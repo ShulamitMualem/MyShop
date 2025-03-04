@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using Repository.Exceptions;
 
 namespace PresidentsApp.Middlewares
 {
@@ -20,7 +21,12 @@ namespace PresidentsApp.Middlewares
             {
                 await _next(httpContext);
             }
-            catch(Exception e)
+            catch (UserAlreadyExistsException ex)
+            {
+                httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
+                await httpContext.Response.WriteAsync(ex.Message);
+            }
+            catch (Exception e)
             {
                 _logger.LogError($"Logged From My Middleware {e.Message}  {e.StackTrace}");
                 httpContext.Response.StatusCode = 500;
