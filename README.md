@@ -71,8 +71,6 @@ The project follows clean code principles to ensure maintainability:
 
 ---
 
-*For any issues or inquiries, please contact the development team.*
-
 ## Contact Information
 - **Name**: Shulamit Mualem
 - **Phone**: 0548552214
