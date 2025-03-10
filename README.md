@@ -27,7 +27,7 @@ The project is divided into multiple layers:
 - **AutoMapper**: Used for mapping between DTOs and domain entities.
 - **Dependency Injection (DI)**: Services and repositories are injected using .NET’s built-in DI to ensure loose coupling.
 - **Asynchronous Processing**: Implemented using `async/await` for scalability and performance.
-- **SQL Database with Code First and Database First Approach:**: The database can be managed using Entity Framework Core with migrations or by designing the database first and generating the code. This project was built using the Database First approach.
+- **SQL Database with Code First and Database First Approach:** The database can be managed using Entity Framework Core with migrations or by designing the database first and generating the code. This project was built using the Database First approach.
 - **Configuration Management**: App settings are managed through config files.
 - **Global Error Handling (Middleware)**: Errors are logged and fatal errors are sent via email.
 - **Request Logging**: Every request is logged for analytics and rating purposes.
