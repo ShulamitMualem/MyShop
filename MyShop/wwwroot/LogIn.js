@@ -91,7 +91,8 @@ const login = async () => {
         if (!response.ok) throw new Error("משהו השתבש, נסה שוב");
 
         const data = await response.json();
-        sessionStorage.setItem("user", JSON.stringify(data));
+        // שמירת המשתמש בלבד, הטוקן נשמר ב-cookie ע"י השרת
+        sessionStorage.setItem("user", JSON.stringify(data.user));
         window.location.href = "ShoppingBag.html";
     } catch (error) {
         alert(error.message);

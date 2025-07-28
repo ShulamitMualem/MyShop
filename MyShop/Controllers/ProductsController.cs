@@ -4,6 +4,7 @@ using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Services.ProductService;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,6 +26,7 @@ namespace MyShop.Controllers
             _mapper = mapper;
             _cache = cache;
         }
+        [AllowAnonymous]
         [HttpGet]
         // GET: api/<ProductsController>
         public async Task<ActionResult<List<Product>>> Get([FromQuery]int position, [FromQuery] int skip, [FromQuery] string? nameSearch, [FromQuery] int? minPrice, [FromQuery] int? maxPrice, [FromQuery] int?[] categoryIds)

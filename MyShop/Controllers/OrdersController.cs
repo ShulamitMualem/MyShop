@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DTO;
 using Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Services.OrderService;
@@ -11,6 +12,7 @@ namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         IOrderService _orderService;

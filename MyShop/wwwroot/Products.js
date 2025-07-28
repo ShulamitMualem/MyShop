@@ -83,10 +83,32 @@ const getUrlForGetProducts = async () => {
     return baseUrl + queryParams.join("&");
 };
 
+const fetchWithAuth = async (url, options = {}) => {
+    const isPublic = url.startsWith('api/Products') || url.startsWith('api/Categories') || url.startsWith('api/Users/login') || (url === 'api/Users' && options.method === 'POST');
+    try {
+        const response = await fetch(url, {
+            ...options,
+            credentials: isPublic ? 'same-origin' : 'include',
+            headers: {
+                ...(options.headers || {}),
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!isPublic && (response.status === 401 || response.status === 403)) {
+            window.location.href = "LogIn.html";
+            return null;
+        }
+        return response;
+    } catch (error) {
+        if (!isPublic) window.location.href = "LogIn.html";
+        throw error;
+    }
+};
+
 const getProducts = async () => {
     const url = await getUrlForGetProducts();
     try {
-        const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        const response = await fetchWithAuth(url, { method: 'GET' });
         const products = await response.json();
         document.getElementById("counter").innerText = products.length;
         return products;
@@ -112,6 +134,14 @@ const loadCategories = () => {
 const loadProductsCount = () => {
     const orderList = JSON.parse(sessionStorage.getItem("orderList")) || [];
     document.getElementById("ItemsCountText").innerText = orderList.length;
+}
+
+function logout() {
+    fetchWithAuth('api/Users/logout', { method: 'POST' })
+        .then(() => {
+            sessionStorage.removeItem('user');
+            window.location.href = 'LogIn.html';
+        });
 }
 
 loadProducts();

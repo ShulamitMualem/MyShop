@@ -39,7 +39,7 @@ const checkIfUserExsist=()=>{
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
     if (!currentUser) {
         alert("שגיאה: אין משתמש מחובר.");
-        window.location.href = "Product.html";
+        window.location.href = "Products.html";
     }
 }
 const updateUser = async () => {
@@ -53,12 +53,12 @@ const updateUser = async () => {
         await checkPassword();
         debugger
         const currentUser = JSON.parse(sessionStorage.getItem("user"))
-        const response = await fetch(`api/Users/${currentUser.userId}`, {
+        const response = await fetchWithAuth(`api/Users/${currentUser.userId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedUser),
         });
-        
+        if (response === null) return; // נשלח ל-login אם לא מורשה
         if (response.status === 400) throw new Error("!כל השדות חובה, בדוק את תקינותם");
         if (response.status === 409) throw new Error("שם משתמש כבר קיים")
         if (!response.ok) throw new Error("משהו השתבש, נסה שוב");

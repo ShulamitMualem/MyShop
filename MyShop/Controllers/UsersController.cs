@@ -5,6 +5,9 @@ using Services.UserService;
 using DTO;
 using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using MyShop;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,12 +24,15 @@ namespace MyShop.Controllers
         ILogger<UsersController> _logger;
         IMemoryCache _cache;
 
-        public UsersController(IMyServices myServices, IMapper mapper, ILogger<UsersController> logger,IMemoryCache cache)
+        private readonly JwtTokenHelper _jwtTokenHelper;
+
+        public UsersController(IMyServices myServices, IMapper mapper, ILogger<UsersController> logger, IMemoryCache cache, IConfiguration configuration)
         {
             services = myServices;
             _mapper = mapper;
             _logger = logger;
             _cache = cache;
+            _jwtTokenHelper = new JwtTokenHelper(configuration);
         }
 
 
@@ -45,6 +51,7 @@ namespace MyShop.Controllers
         }
 
         // POST api/<UsersController>
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CreateUser user)
         {
@@ -55,12 +62,25 @@ namespace MyShop.Controllers
             return BadRequest("סיסמתך חלשה מדי");
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<User>> LogIn([FromQuery] string userName, string password)
+        public async Task<ActionResult> LogIn([FromQuery] string userName, string password)
         {
             _logger.LogInformation($"Login attempted with user name: {userName} and password: {password}");
             User user = await services.Login(userName, password);
-            return user != null ? Ok(user) : NoContent();
+            if (user != null)
+            {
+                var token = _jwtTokenHelper.GenerateToken(user);
+                Response.Cookies.Append("jwtToken", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTimeOffset.UtcNow.AddHours(1)
+                });
+                return Ok(new { user });
+            }
+            return NoContent();
         }
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
@@ -74,6 +94,12 @@ namespace MyShop.Controllers
         {
             int score = services.CheckPassword(password);
             return score < 3 ? BadRequest(score) : Ok(score);
+        }
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("jwtToken");
+            return Ok();
         }
 
     }

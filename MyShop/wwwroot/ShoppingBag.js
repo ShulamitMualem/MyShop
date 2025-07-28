@@ -73,11 +73,12 @@ const createOrder = async (orderList) => {
     const orderData = createOrderData(orderList);
 
     try {
-        const response = await fetch("api/Orders", {
+        const response = await fetchWithAuth("api/Orders", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(orderData),
         });
+        if (response === null) return null; // נשלח ל-login אם לא מורשה
 
         return response.ok ? await response.json() : null;
     } catch (error) {
@@ -86,5 +87,13 @@ const createOrder = async (orderList) => {
         return null;
     }
 };
+
+function logout() {
+    fetchWithAuth('api/Users/logout', { method: 'POST' })
+        .then(() => {
+            sessionStorage.removeItem('user');
+            window.location.href = 'LogIn.html';
+        });
+}
 
 initializeOrderPage();

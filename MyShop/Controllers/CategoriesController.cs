@@ -6,6 +6,7 @@ using Services.CategoryService;
 using AutoMapper;
 using DTO;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,6 +14,7 @@ namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         ICategoryService _categoryService;
@@ -26,6 +28,7 @@ namespace MyShop.Controllers
             _cache = cache;
         }
         // GET: api/<CategoriesController>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> Get()
         {
