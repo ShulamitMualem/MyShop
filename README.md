@@ -64,4 +64,4 @@ The project follows clean code principles to ensure maintainability:
 ## Contact Information
 - **Name**: Shulamit Mualem
 - **Phone**: 0548552214
-- **Email**: c0527671088@gmail.com
+- **Email**: shulamit552214@gmail.com
