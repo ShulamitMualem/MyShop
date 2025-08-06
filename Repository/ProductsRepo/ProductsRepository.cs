@@ -10,8 +10,8 @@ namespace Repository.ProductsRepo
 {
     public class ProductsRepository : IProductsRepository
     {
-        MyShop328264650Context _dbcontext;
-        public ProductsRepository(MyShop328264650Context context)
+        MyShopContext _dbcontext;
+        public ProductsRepository(MyShopContext context)
         {
             _dbcontext = context;
         }

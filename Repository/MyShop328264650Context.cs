@@ -6,13 +6,13 @@ using Entities;
 
 namespace Repository;
 
-public partial class MyShop328264650Context : DbContext
+public partial class MyShopContext : DbContext
 {
-    public MyShop328264650Context()
+    public MyShopContext()
     {
     }
 
-    public MyShop328264650Context(DbContextOptions<MyShop328264650Context> options)
+    public MyShopContext(DbContextOptions<MyShopContext> options)
         : base(options)
     {
     }
@@ -114,6 +114,9 @@ public partial class MyShop328264650Context : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.UserName)
+                .HasMaxLength(50)
+                .IsFixedLength();
+            entity.Property(e => e.PasswordSalt)
                 .HasMaxLength(50)
                 .IsFixedLength();
         });

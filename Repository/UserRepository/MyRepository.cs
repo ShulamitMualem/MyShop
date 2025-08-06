@@ -9,8 +9,8 @@ namespace Repository.UserRepository
 {
     public class MyRepository : IMyRepository
     {
-        MyShop328264650Context _dbcontext;
-        public MyRepository(MyShop328264650Context context)
+        MyShopContext _dbcontext;
+        public MyRepository(MyShopContext context)
         {
             _dbcontext = context;
         }
@@ -49,7 +49,7 @@ namespace Repository.UserRepository
         }
         public async Task<User> Login(string userName, string password)
         {
-            return await _dbcontext.Users.FirstOrDefaultAsync(user => user.UserName == userName && user.Password == password);
+            return await _dbcontext.Users.FirstOrDefaultAsync(user => user.UserName == userName);
         }
 
     }

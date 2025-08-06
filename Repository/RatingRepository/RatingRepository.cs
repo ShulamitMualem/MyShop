@@ -11,8 +11,8 @@ namespace Repository.RatingRepository
 {
     public class RatingRepository : IRatingRepository
     {
-        MyShop328264650Context _dbcontext;
-        public RatingRepository(MyShop328264650Context context)
+        MyShopContext _dbcontext;
+        public RatingRepository(MyShopContext context)
         {
             _dbcontext = context;
         }

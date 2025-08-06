@@ -10,14 +10,14 @@ namespace TestMyShop
 {
     public class DatabaseFixture:IDisposable
     {
-        public MyShop328264650Context Context { get; private set; }
+        public MyShopContext Context { get; private set; }
 
         public DatabaseFixture()
         {
-            var options = new DbContextOptionsBuilder<MyShop328264650Context>()
+            var options = new DbContextOptionsBuilder<MyShopContext>()
                 .UseSqlServer("Server=srv2\\pupils;Database=Test328264650;Trusted_Connection=True;TrustServerCertificate=True")
                 .Options;
-            Context = new MyShop328264650Context(options);
+            Context = new MyShopContext(options);
            Context.Database.EnsureCreated();
 
         }

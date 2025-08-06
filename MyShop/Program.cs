@@ -45,12 +45,13 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
-builder.Services.AddDbContext<MyShop328264650Context>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<MyShopContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Host.UseNLog();
 
 var app = builder.Build();
@@ -65,9 +66,11 @@ if (app.Environment.IsDevelopment())
 app.UseErrorHandlingMiddleware();
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 
+app.UseJwtCookieMiddleware();
+
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseRatingMiddleware();
 app.MapControllers();

@@ -73,7 +73,7 @@ const createOrder = async (orderList) => {
     const orderData = createOrderData(orderList);
 
     try {
-        const response = await fetchWithAuth("api/Orders", {
+        const response = await fetch("api/Orders", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(orderData),
@@ -89,7 +89,7 @@ const createOrder = async (orderList) => {
 };
 
 function logout() {
-    fetchWithAuth('api/Users/logout', { method: 'POST' })
+    fetch('api/Users/logout', { method: 'POST' })
         .then(() => {
             sessionStorage.removeItem('user');
             window.location.href = 'LogIn.html';

@@ -10,8 +10,8 @@ namespace Repository.NewFolder
 {
     public class OrderRepository : IOrderRepository
     {
-        MyShop328264650Context _dbcontext;
-        public OrderRepository(MyShop328264650Context context)
+        MyShopContext _dbcontext;
+        public OrderRepository(MyShopContext context)
         {
             _dbcontext = context;
         }
